@@ -38,7 +38,8 @@ public class URLConnectionTest {
 		
 		// 해당 호스트의 페이지 내용 가져오기
 		// 파일을 읽어오기 위한 스트림객체 생성
-		InputStream is = url.openStream();
+		// InputStream is = url.openStream();
+		InputStream is = url.openConnection().getInputStream();
 		InputStreamReader isr = new InputStreamReader(is, "UTF-8");
 		BufferedReader br = new BufferedReader(isr);
 		

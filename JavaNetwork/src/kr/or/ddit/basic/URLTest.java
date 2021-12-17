@@ -16,8 +16,10 @@ public class URLTest {
 		System.out.println("protocol : " + url.getProtocol());
 		System.out.println("host : " + url.getHost());
 		System.out.println("query : " + url.getQuery());	
-		System.out.println("file : " + url.getFile());	// 쿼리 정보 포함
-		System.out.println("path : " + url.getPath());	// 쿼리 정보 미포함
+		// 쿼리 정보 포함 ▽
+		System.out.println("file : " + url.getFile());	
+		// 쿼리 정보 미포함 ▽
+		System.out.println("path : " + url.getPath());	
 		System.out.println("port : " + url.getPort());
 		System.out.println("ref : " + url.getRef());
 		
@@ -25,20 +27,6 @@ public class URLTest {
 		System.out.println(url.toString());
 		System.out.println(url.toURI().toString());
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	}
-	
 	
 }
