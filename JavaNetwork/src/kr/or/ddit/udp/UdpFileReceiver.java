@@ -19,7 +19,8 @@ public class UdpFileReceiver {
 		DatagramSocket ds = new DatagramSocket(port);
 		
 		FileOutputStream fos = null;
-		DatagramPacket dp = new DatagramPacket(buffer, buffer.length);
+		DatagramPacket dp = 
+			new DatagramPacket(buffer, buffer.length);
 		
 		ds.receive(dp); // 전송시작(start) 문자열 받기
 		
@@ -27,15 +28,16 @@ public class UdpFileReceiver {
 		
 		if(str.equals("start")) {
 			// 전송 파일명 받기
-			buffer = new byte[1000]; // 초기화
+			buffer = new byte[1000]; //초기화
 			dp = new DatagramPacket(buffer, buffer.length);
+			ds.receive(dp);
 			
 			str = new String(dp.getData()).trim();
 			
-			fos = new FileOutputStream("d:/D_Other/" + str);
+			fos = new FileOutputStream("d:/D_Other/download/" + str);
 			
 			// 전송파일 크기(bytes) 받기
-			buffer = new byte[1000]; // 초기화
+			buffer = new byte[1000]; //초기화
 			dp = new DatagramPacket(buffer, buffer.length);
 			ds.receive(dp);
 			
@@ -48,10 +50,14 @@ public class UdpFileReceiver {
 			while(true) {
 				ds.receive(dp);
 				readBytes = dp.getLength();
-				fos.write(dp.getData(), 0 , readBytes);
+				fos.write(dp.getData(), 0, readBytes);
 				
 				totalReadBytes += readBytes;
-				System.out.println("진행 상태 : " + totalReadBytes + "/" + fileSize + "Bytes(" + (totalReadBytes*100 / fileSize) + "%)");
+				
+				System.out.println("진행 상태 : " 
+						+ totalReadBytes + "/"
+						+ fileSize + " Bytes("
+			+ (totalReadBytes * 100 / fileSize) + " %)");
 				
 				if(totalReadBytes >= fileSize) {
 					break;
@@ -62,13 +68,17 @@ public class UdpFileReceiver {
 			long diffTime = endTime - startTime;
 			double transferSpeed = fileSize / diffTime;
 			
-			System.out.println("걸린 시간 : " + diffTime + " (ms)");
-			System.out.println("평균 수신속도 : " + transferSpeed + " Bytes/ms");
+			System.out.println("걸린 시간 : " + diffTime
+								+ " (ms)");
+			System.out.println("평균 수신속도 : " 
+							+ transferSpeed + " Bytes/ms");
 			System.out.println("수신 완료...");
 			
 			fos.close();
 			ds.close();
 			
 		}
+		
+		
 	}
 }
