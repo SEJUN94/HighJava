@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class MultiChatServer {
 	// 대화명, 클라이언트의 Socket을 저장하기 위한 Map 변수 선언
@@ -83,7 +84,51 @@ public class MultiChatServer {
 		}
 		
 		public void sendMessage(String msg, String from) {
-			sendMessage("[" + from + "]" + msg);
+			if (msg.substring(0, 2).equals("/w")||msg.substring(0, 2).equals("/W")||msg.substring(0, 2).equals("/ㅈ")) {
+				sendWhisper(msg);
+			} else {
+				sendMessage("[" + from + "]" + msg);
+			}
+		}
+		
+		public void sendWhisper(String msg) {
+			// 해당 닉네임의 유저가 접속 중인지 확인할 keySet
+			Set<String> keySet = clients.keySet();
+			
+			// 보낸유저로 부터 온 메세지를 2영역으로 구분(보낼 유저명,보낼 메세지)
+			int endIndex = msg.indexOf(" ",3);
+			String userName = msg.substring(3,endIndex);
+			String msgToSend = msg.substring(endIndex+1);
+			
+			// 해당유저가 접속중인지 확인
+			if (keySet.contains(userName)) {
+				// 해당 유저가 존재할 경우, 1.귓속말을 보낸 유저에게 전송 확인 메세지 출력  / 2. 귓속말 받을 대상에게 귓속말 전송
+				// dos1.귓속말을 보낸 유저(name)에게 전송 확인 메세지 출력
+				// dos2.귓속말을 보낼 유저에게 보낼 메세지 출력
+				String successMsg = "**귓속말 전송을 성공 했습니다!!";
+				try {
+					// 보낸 유저(name)의 정보를 담은 DataOutputStream 생성
+					DataOutputStream dos = new DataOutputStream(clients.get(name).getOutputStream());
+					dos.writeUTF(successMsg);
+					
+					// 보낼 유저(userName)의 정보를 담은 DataOutputStream 생성
+					DataOutputStream dos2 = new DataOutputStream(clients.get(userName).getOutputStream());
+					dos2.writeUTF("["+ name +"]님 으로부터의 귓속말 : "+msgToSend);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				// 전송 실패 시 귓속말 전송 요청한 사람에게 보낼 메세지
+				String failMsg = "**귓속말 전송에 실패 했습니다  \n(전송 형식을 확인해 주세요 : /w 아이디 메세지)\n";
+				try {
+					// 전송 실패 시 귓속말 전송 요청한 사람에게 보낼 메세지
+					DataOutputStream dos = new DataOutputStream(clients.get(name).getOutputStream());
+					dos.writeUTF(failMsg);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
 		}
 		
 		@Override
