@@ -1,15 +1,25 @@
 package kr.or.ddit.basic;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
  * XML DOM을 이용한 XML문서 생성 예제
- * @author PC-14
  */
 public class T01_DOMCreationTest {
 /*
@@ -28,7 +38,7 @@ public class T01_DOMCreationTest {
 	예를 들면, HTML DOM은 HTML 엘리먼트 요소 및 속성 정보를 핸들링하기 위한
 	인터페이스를 제공한다.
  */
-	public void createDoc() throws ParserConfigurationException {
+	public void createDoc() throws ParserConfigurationException, IOException, TransformerException {
 		// XML문서를 생성하기 위한 DocumentBuilder객체 생성하기
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = dbf.newDocumentBuilder();
@@ -62,7 +72,102 @@ public class T01_DOMCreationTest {
 		
 		booklist.appendChild(book);
 		//----------------------------------------
+		// book 엘리먼트 생성 및 속성값 설정하기
+		book = document.createElement("book");
+		book.setAttribute("isbn", "B002");
+		book.setAttribute("kind", "JAVA");
 		
+		// 자식 엘리먼트 생성 및 설정
+		title = document.createElement("title");
+		title.setTextContent("자바고급");
+		author = document.createElement("author");
+		author.setTextContent("홍길동");
+		price = document.createElement("price");
+		price.setTextContent("30000");
+		
+		// book 엘리먼트에 자식 엘리먼트 추가
+		book.appendChild(title);
+		book.appendChild(author);
+		book.appendChild(price);
+		
+		booklist.appendChild(book);
+		//----------------------------------------
+		// book 엘리먼트 생성 및 속성값 설정하기
+		book = document.createElement("book");
+		book.setAttribute("isbn", "B003");
+		book.setAttribute("kind", "DB");
+		
+		// 자식 엘리먼트 생성 및 설정
+		title = document.createElement("title");
+		title.setTextContent("디비설계");
+		author = document.createElement("author");
+		author.setTextContent("도룡뇽");
+		price = document.createElement("price");
+		price.setTextContent("35000");
+		
+		// book 엘리먼트에 자식 엘리먼트 추가
+		book.appendChild(title);
+		book.appendChild(author);
+		book.appendChild(price);
+		
+		booklist.appendChild(book);
+		//----------------------------------------
+		// book 엘리먼트 생성 및 속성값 설정하기
+		book = document.createElement("book");
+		book.setAttribute("isbn", "B004");
+		book.setAttribute("kind", "DB");
+		
+		// 자식 엘리먼트 생성 및 설정
+		title = document.createElement("title");
+		title.setTextContent("디비구현");
+		author = document.createElement("author");
+		author.setTextContent("킹상우");
+		price = document.createElement("price");
+		price.setTextContent("50000");
+		
+		// book 엘리먼트에 자식 엘리먼트 추가
+		book.appendChild(title);
+		book.appendChild(author);
+		book.appendChild(price);
+		
+		booklist.appendChild(book);
+		
+		// 루트 엘리먼트에 booklist 추가하기
+		root.appendChild(booklist);
+		
+		// 도큐먼트에 root엘리먼트 추가하기
+		document.appendChild(root);
+		
+		// XML 문자열로 변환하기
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		
+		DOMSource source = new DOMSource(document);
+		StreamResult result = new StreamResult(baos);
+		
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		
+		// 출력 인코딩 설정
+		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+		
+		// 들여 쓰기 설정(공백 크기 : 2)
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		
+		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+		
+		transformer.transform(source, result);
+		
+		try(FileOutputStream fos = new FileOutputStream("./src/new_book.xml")){
+			fos.write(baos.toByteArray());
+		} System.out.println(new String(baos.toByteArray(), StandardCharsets.UTF_8));
+		
+	}
+	public static void main (String[] args) {
+		try {
+			new T01_DOMCreationTest().createDoc();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
