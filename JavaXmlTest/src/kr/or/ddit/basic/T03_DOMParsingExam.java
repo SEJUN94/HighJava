@@ -1,6 +1,5 @@
 package kr.or.ddit.basic;
 
-import java.io.File;
 import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;

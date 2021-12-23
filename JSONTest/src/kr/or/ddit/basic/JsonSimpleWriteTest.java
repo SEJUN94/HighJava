@@ -31,6 +31,7 @@ public class JsonSimpleWriteTest {
 		mv.put("addr", "대전시 중구 대흥동 대덕인재개발원");
 		
 		// JSONArray 데이터 생성
+		// JSON을 담기위한 배열
 		JSONArray memList = new JSONArray();
 		
 		JSONObject mv2 = new JSONObject();
