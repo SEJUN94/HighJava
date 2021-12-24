@@ -33,6 +33,8 @@ public class T01_ServletLifeCycle extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 메서드 방식이 GET인 경우 호출됨...
 		System.out.println("doGet() 호출됨...");
+		
+		throw new ServletException("서블릿 예외 발생했어요...");
 	}
 
 	@Override
@@ -44,6 +46,7 @@ public class T01_ServletLifeCycle extends HttpServlet {
 	@Override
 	public void destroy() {
 		// 객체 소멸시(컨테이너로부터 서블릿 객체 제거시) 필요한 코드 작성
+		// 마무리 작업 할게 있다면 destroy 메서드에 정의 해주면됨
 		System.out.println("destroy() 호출됨...");
 	}
 }
