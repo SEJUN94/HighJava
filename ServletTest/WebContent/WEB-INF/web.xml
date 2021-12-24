@@ -47,6 +47,10 @@
 		<location>/T04_ErrorHandler</location>
 	</error-page>
 	
+	<error-page>
+		<exception-type>javax.servlet.ServletException</exception-type>
+		<location>/T04_ErrorHandler</location>
+	</error-page>
 	
 
 </web-app>
