@@ -1,6 +1,5 @@
-package kr.or.ddit.basic;
+package homework;
 
-import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
 
@@ -10,15 +9,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
+import kr.or.ddit.basic.JsonParsingExam;
 
-/**
- * JSON 문서 파싱 예제(레시피 정보 조회 API)
- */
-public class JsonParsingExam {
+public class JsonExam {
 	public void parse() {
 		try {
 			// DOM Document 객체 생성하기 위한 메서드
@@ -26,7 +20,8 @@ public class JsonParsingExam {
 			DocumentBuilder builder = dbf.newDocumentBuilder();
 			
 			String svcKey = "Grid_20150827000000000227_1";  // 레시피 재료 정보 조회 서비스
-			String apiKey = "1df7e8571e8df3f8cbc9b87691ca7d3e4d04f03c593d477e52bf67b03f0b6e1c"; // 개인별 발급.
+			String apiKey = "7BdNsG9TfA3UaDxoo2TbdDX66CITKvNxRNCYCk6KHKTS7FKmbF%2F%2FNTxBXPZnvbHmVqU2JPZBJJWZLhvOP2qq6g%3D%3D\r\n" + 
+					""; // 개인별 발급.
 			String startIdx = "1";  	// 레시피 재료 시작 순번
 			String endIdx = "5";		// 레시피 재료 종료 순번
 			String recipeId = "195428";	// 래시피가 궁금한 음식 ID
