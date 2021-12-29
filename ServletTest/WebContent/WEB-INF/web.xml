@@ -107,6 +107,24 @@
 		<url-pattern>/T11_ServletRequestListenerTest</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>T12_HttpSessionListenerTest</servlet-name>
+		<servlet-class>kr.or.ddit.basic.T12_HttpSessionListenerTest</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>T12_HttpSessionListenerTest</servlet-name>
+		<url-pattern>/T12_HttpSessionListenerTest</url-pattern>
+	</servlet-mapping>
+	
+		<servlet>
+		<servlet-name>T13_ImageServlet</servlet-name>
+		<servlet-class>kr.or.ddit.basic.T13_ImageServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>T13_ImageServlet</servlet-name>
+		<url-pattern>/T13_ImageServlet</url-pattern>
+	</servlet-mapping>
+	
 	<session-config>
 		<session-timeout>1</session-timeout>
 	</session-config>
@@ -143,5 +161,9 @@
 		<listener-class>kr.or.ddit.basic.MyServletRequestListener</listener-class>
 	</listener>
 	
+	<listener>
+	  <display-name>MyHttpSessionListener</display-name>
+	  <listener-class>kr.or.ddit.basic.MyHttpSessionListener</listener-class>
+	</listener>
 
 </web-app>
