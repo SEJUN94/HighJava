@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+         PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+         "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="member">
+
+      
+<!-- 
+   이 영영에 SQL문에 맞는 태그를 사용하여 SQL문을 작성한다.
+   
+   사용할 수 있는 기본적인 태그들
+   <select> ~~~ </select>
+   <insert> ~~~ </insert>
+   <update> ~~~ </update>
+   <delete> ~~~ </delete>
+   
+   위 태그에 사용되는 속성들
+   
+   1) id속성 : 해당 태그를 호출할 때 <sqlMap> 태그의 namespace와 연결하여
+              사용하는 이름.
+   2) parameterClass속성: SQL문에 사용될 데이터가 들어있는 객체를 지정한다.
+                     (보통 VO클래스, 자바의 자료형이름 등이 사용된다.)
+                     (typeAlias로 지정한 alias명을 사용할 수 있다.)
+   3) resultClass속성: select문을 실행한 결과를 담을 객체를 지정한다.
+               (보통 VO클래스나 자바의 자료형이름을 사용한다.)
+   4) resultMap속성: 결과 레코드 컬럼명과 VO객체의 property명이 다를 경우에 
+                                     적절한 매핑을 위해 사용한다.
+
+ -->                            
+<insert id="insertMember" parameterClass="kr.or.ddit.member.vo.MemberVO">  
+   
+    INSERT INTO mymember 
+   (mem_id, mem_name, mem_tel, mem_addr)
+     VALUES (#memId#, #memName#, #memTel#, #memAddr#)
+
+
+</insert>
+
+<update id="updateMember" parameterClass="kr.or.ddit.member.vo.MemberVO">
+
+   UPDATE mymember
+   SET mem_name = #memName#
+   ,mem_tel = #memTel# 
+   ,mem_addr = #memAddr#
+   WHERE mem_id = #memId# 
+
+</update>
+
+<delete id = "deleteMember" parameterClass="String">
+
+   DELETE mymember where mem_id= #memId#
+   
+</delete>
+
+<resultMap id="memMap" class="kr.or.ddit.member.vo.MemberVO">
+   <result property="memId" column="mem_id"/>
+   <result property="memName" column="mem_name"/>
+   <result property="memTel" column="mem_tel"/>
+   <result property="memAddr" column="mem_addr"/>
+   
+
+</resultMap>
+
+<select id="getMemberAll" resultMap="memMap">   
+   select*
+   from mymember
+   
+   
+<!-- <select id="getMemberAll" resultClass="kr.or.ddit.member.vo.MemberVO">  
+   select mem_id as memId
+         ,mem_name as memName
+         ,mem_tel as memTel
+         ,mem_addr as memAddr
+   from mymember  -->
+   
+</select>
+
+<select id="getMember" parameterClass="String" resultMap ="memMap">   <!-- 파라미터클래스는 생략가능(무슨값인지 알기 때문에) result클래스 생략 불가 -->
+
+
+   select * from mymember where mem_id = #memId#
+
+</select>
+
+<select id="checkMember" parameterClass="String" resultClass="int">  <!-- count 이기 때문에 int -->
+
+  select count(*) as cnt from mymember 
+where mem_id = #memId#
+
+</select>
+
+<select id="searchMember" parameterClass="memVO"
+     resultMap="memMap">
+     
+  select *
+  from mymember
+  where 1=1
+<!--   <isEqual property="memId" compareValue="123"> -->
+<!--   fafsafsda -->
+<!--   </isEqual> -->
+  <isNotEmpty property="memId">
+       and mem_id =#memId# 
+  </isNotEmpty>
+  
+    <isNotEmpty property="memName">
+      and mem_name = #memName#
+  </isNotEmpty>
+  
+    <isNotEmpty property="memTel">
+      and mem_tel = #memTel#
+  </isNotEmpty>
+  
+    <isNotEmpty property="memAddr">
+      and mem_addr like '%' || #memAddr # || '%'
+  </isNotEmpty>
+         
+   
+</select>
+
+
+</sqlMap>   
