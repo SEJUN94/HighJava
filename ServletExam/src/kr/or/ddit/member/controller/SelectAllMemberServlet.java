@@ -28,7 +28,7 @@ public class SelectAllMemberServlet extends HttpServlet {
 		
 		req.setAttribute("memList", memList);
 		
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/view/member/list.jsp");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/view/member/list.jsp");
 		dispatcher.forward(req, resp); // view 페이지로 전달
 		
 	}

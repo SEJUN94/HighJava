@@ -1,6 +1,7 @@
 package kr.or.ddit.member.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,8 +13,8 @@ import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.member.vo.MemberVO;
 
-@WebServlet("/member/detail.do")
-public class DetailMemberServlet extends HttpServlet{
+@WebServlet("/member/delete.do")
+public class DeleteMemberServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
@@ -24,18 +25,31 @@ public class DetailMemberServlet extends HttpServlet{
 		IMemberService memberService = MemberServiceImpl.getInstance();
 		
 		// 3. 회원정보 조회
-		MemberVO mv =memberService.getMember(memId);
+		int cnt = memberService.deleteMember(memId);
 		
-		req.setAttribute("mv", mv);
+		String msg = "";
+		if(cnt > 0) {
+			msg = "성공";
+		}else {
+			msg = "실패";
+		}
 		
-		// 결과를 VIEW화면에 출력하기
-		req.getRequestDispatcher("/WEB-INF/view/member/detail.jsp").forward(req, resp);
+		//resp.setCharacterEncoding("UTF-8");
+		// 4. 목록 조회화면으로 이동
+		//req.getRequestDispatcher("/member/list.do")
+		//	.forward(req, resp);
+		
+		String redirectUrl = req.getContextPath() 
+				+ "/member/list.do?msg=" 
+				+ URLEncoder.encode(msg, "UTF-8");
+		
+		resp.sendRedirect(redirectUrl); // 목록조회 화면으로  리다이렉트
 	
 	}
 	
 	@Override
-	protected void doPost(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		
+		doGet(req, resp);
 	}
 }

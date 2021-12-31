@@ -13,13 +13,25 @@ import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.member.vo.MemberVO;
 
-@WebServlet("/member/insert.do")
-public class InsertMemberServlet extends HttpServlet {
+@WebServlet("/member/update.do")
+public class updateMemberServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		req.getRequestDispatcher("/WEB-INF/view/member/insertForm.jsp")
+		// 1. 파라미터정보 가져오기
+		String memId = req.getParameter("memId");
+				
+		// 2. 서비스 객체 가져오기
+		IMemberService memberService = MemberServiceImpl.getInstance();
+				
+		// 3. 회원정보 조회
+		MemberVO mv =memberService.getMember(memId);
+				
+		req.setAttribute("mv", mv);
+				
+		// 4. 업데이트 화면으로 포워딩
+		req.getRequestDispatcher("/WEB-INF/view/member/updateForm.jsp")
 			.forward(req, resp);
 	}
 	
@@ -43,7 +55,7 @@ public class InsertMemberServlet extends HttpServlet {
 		mv.setMemTel(memTel);
 		mv.setMemAddr(memAddr);
 		
-		int cnt = memberService.insertMember(mv);
+		int cnt = memberService.updateMember(mv);
 		
 		String msg = "";
 		if(cnt > 0) {
