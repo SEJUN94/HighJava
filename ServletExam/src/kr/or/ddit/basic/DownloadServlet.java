@@ -17,7 +17,7 @@ public class DownloadServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//String fileName = "";
-		String fileName = "2.jpg";
+		String fileName = "11.jpg";
 		
 		// 파일 다운로드 처리를 위한 응답헤더 정보 설정하기
 		resp.setContentType("application/octet-stream");
