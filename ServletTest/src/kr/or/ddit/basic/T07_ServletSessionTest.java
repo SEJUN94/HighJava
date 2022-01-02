@@ -74,8 +74,8 @@ public class T07_ServletSessionTest extends HttpServlet {
 					+ "<tr><td>방문 횟수</td><td>" + visitCount + "</td></tr>"
 					+ "</table></body></html>");
 		
-					//session.invalidate(); // 세션 삭제
-					//session.setMaxInactiveInterval(20);
+					//session.invalidate(); // 세션 삭제 새로고침 마다 세션 ID가 바뀜 들어올때마다 다른 아이디로 접속
+					//session.setMaxInactiveInterval(20); // ()안에 입력한 초가 흐르면 자동으로 쿠키가 삭제되고 새로운 세션ID가 부여
 	}
 	
 	@Override
