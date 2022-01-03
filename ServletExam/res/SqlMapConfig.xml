@@ -22,6 +22,7 @@
 	 -->
 <!-- 	<typeAlias alias="memVO" type="ibatis.member.vo.MemberVO"/> -->
 	<typeAlias alias="memVO" type="kr.or.ddit.member.vo.MemberVO"/>
+	<typeAlias alias="atchFileVO" type="kr.or.ddit.comm.vo.AtchFileVO"/>
 
 	<!--
 	DB와의 연결을 처리하는 부분
@@ -64,6 +65,7 @@
 	형식) <sqlMap resource="경로명/파일명.xml"/>
 	-->
 	<sqlMap resource="sqlmap/member.xml"/>
+	<sqlMap resource="sqlmap/atchFile.xml"/>
 </sqlMapConfig>
 
 
