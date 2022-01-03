@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.or.ddit.comm.dao.AtchFileDaoImpl;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
 import kr.or.ddit.comm.vo.AtchFileVO;
@@ -19,9 +18,10 @@ import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.member.vo.MemberVO;
 
 @WebServlet("/member/insert.do")
-@MultipartConfig(fileSizeThreshold = 1024*1024*3
-, maxFileSize = 1024*1024*40
-, maxRequestSize = 1024*1024*50)
+@MultipartConfig(
+		fileSizeThreshold = 1024*1024*3
+		, maxFileSize = 1024*1024*40
+		, maxRequestSize = 1024*1024*50)
 public class InsertMemberServlet extends HttpServlet {
 	
 	@Override
@@ -33,7 +33,7 @@ public class InsertMemberServlet extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//req.setCharacterEncoding("UTF-8");
+		
 		// 1. 요청 파라미터 정보 가져오기
 		String memId = req.getParameter("memId");
 		String memName = req.getParameter("memName");
@@ -43,8 +43,8 @@ public class InsertMemberServlet extends HttpServlet {
 		// 2. 서비스 객체 생성하기
 		IMemberService memberService = 
 				MemberServiceImpl.getInstance();
-		
-		IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+		IAtchFileService fileService =
+				AtchFileServiceImpl.getInstance();
 		
 		AtchFileVO atchFileVO = new AtchFileVO();
 		
@@ -55,6 +55,7 @@ public class InsertMemberServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		
 		// 3. 회원정보 등록
 		MemberVO mv = new MemberVO();
@@ -75,7 +76,6 @@ public class InsertMemberServlet extends HttpServlet {
 		
 		req.setAttribute("msg", msg);
 		
-		//resp.setCharacterEncoding("UTF-8");
 		// 4. 목록 조회화면으로 이동
 		//req.getRequestDispatcher("/member/list.do")
 		//	.forward(req, resp);

@@ -12,11 +12,12 @@ import kr.or.ddit.comm.dao.AtchFileDaoImpl;
 import kr.or.ddit.comm.dao.IAtchFileDao;
 import kr.or.ddit.comm.vo.AtchFileVO;
 
-public class AtchFileServiceImpl implements IAtchFileService{
-
+public class AtchFileServiceImpl implements IAtchFileService {
+	
+	private static final String UPLOAD_DIR = "upload_files";
+	
 	private static IAtchFileService fileService;
 	private IAtchFileDao atchFileDao;
-	private static final String UPLOAD_DIR = "upload_files";
 	
 	private AtchFileServiceImpl() {
 		atchFileDao = AtchFileDaoImpl.getInstance();
@@ -26,12 +27,13 @@ public class AtchFileServiceImpl implements IAtchFileService{
 		if(fileService == null) {
 			fileService = new AtchFileServiceImpl();
 		}
+		
 		return fileService;
 	}
 	
 	@Override
 	public AtchFileVO saveAtchFileList(HttpServletRequest req) throws Exception {
-
+		
 		String uploadPath = req.getServletContext().getRealPath("")
 				+ File.separator + UPLOAD_DIR;
 		File uploadDir = new File(uploadPath);
@@ -42,8 +44,8 @@ public class AtchFileServiceImpl implements IAtchFileService{
 		AtchFileVO atchFileVO = null;
 		
 		String fileName = "";
-		boolean isFirstFile = true; // 첫번째 파일 여부
-
+		boolean isFirstFile = true;	// 첫번째 파일 여부
+		
 		for(Part part : req.getParts()) {
 			
 			fileName = getFileName(part);
@@ -59,12 +61,12 @@ public class AtchFileServiceImpl implements IAtchFileService{
 					// 기본 파일정보 저장(VO에 atchFileId가 저장된다.)
 					atchFileDao.insertAtchFile(atchFileVO);
 				}
-
+				
 				String orignFileName = fileName; // 원본파일명
-				long fileSize = part.getSize();  // 파일 사이즈
+				long fileSize = part.getSize(); // 파일 사이즈
 				String saveFileName = ""; // 저장 파일명
 				String saveFilePath = ""; // 저장 파일경로
-				File storeFile = null; // 저장 파일 객체
+				File storeFile = null;	// 저장 파일 객체
 				
 				do {
 					// 저장파일명 추출
@@ -73,10 +75,12 @@ public class AtchFileServiceImpl implements IAtchFileService{
 					saveFilePath = uploadPath + File.separator + saveFileName;
 					storeFile = new File(saveFilePath);
 					
-				}while(storeFile.exists()); // 저장파일명 중복되는지 체크
+				}while(storeFile.exists()); //저장파일명 중복되는지 체크
 				
 				// 확장명 추출
-				String fileExtension = orignFileName.lastIndexOf(".") < 0 ? "" : orignFileName.substring(orignFileName.lastIndexOf(".") +1);
+				String fileExtension = orignFileName.lastIndexOf(".") < 0 ?
+						"" : orignFileName.substring(
+								orignFileName.lastIndexOf(".") + 1);
 				
 				part.write(saveFilePath); // 업로드 파일 저장
 				
@@ -93,34 +97,24 @@ public class AtchFileServiceImpl implements IAtchFileService{
 			}
 		}
 		
+		
 		return atchFileVO;
 	}
-
+	
+	
 	/**
 	 * Part 객체 파싱하여 파일이름 추출하기
 	 * 
-	 * @param part 
-	 * @return 파일명 : 파일명이 존재하지 않으면 null값 리턴함(폼필드)
+	 * @param part
+	 * @return 파일명: 파일명이 존재하지 않으면 NULL값 리턴함(폼필드)
 	 */
 	private String getFileName(Part part) {
-	/*
-		Content-Disposition 헤더에대하여...
 		
-		1. response header에서 사용되는 경우 ... ex) 파일 다운로드
-		  Content-Disposition: inline (default)
-		  Content-Disposition: attachment  // 파일 다운로드
-		  Content-Disposition: attachment; filename="a.jpg"  // 해당이름으로 다운로드 앞에 같은 경우 "a.jpg"로 다운로드됨
-		  
-		2. multipart body를 위한 헤더정보로 사용되는 경우... ex)파일 업로드
-		 Cotent-Disposition : form-data,	
-		 Cotent-Disposition : form-data; name="fileName"	
-		 Cotent-Disposition : form-data; name="fileName"; fliename="a.jpg"	
-		 */
-		
-		for(String content : part.getHeader("Content-Dispositon").split(";")) {
-		
+		for(String content 
+			: part.getHeader("Content-Disposition").split(";")) {
+			
 			if(content.trim().startsWith("filename")) {
-				return content.substring(content.indexOf("=")+1)
+				return content.substring(content.indexOf("=") + 1)
 						.trim().replace("\"", "");
 			}
 		}
@@ -130,13 +124,11 @@ public class AtchFileServiceImpl implements IAtchFileService{
 
 	@Override
 	public List<AtchFileVO> getAtchFileList(AtchFileVO atchFileVO) throws SQLException {
-		// TODO Auto-generated method stub
 		return atchFileDao.getAtchFileList(atchFileVO);
 	}
 
 	@Override
 	public AtchFileVO getAtchFileDetail(AtchFileVO atchFileVO) throws SQLException {
-		// TODO Auto-generated method stub
 		return atchFileDao.getAtchFileDetail(atchFileVO);
 	}
 
