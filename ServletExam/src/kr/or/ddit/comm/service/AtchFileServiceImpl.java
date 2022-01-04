@@ -35,6 +35,7 @@ public class AtchFileServiceImpl implements IAtchFileService {
 	public AtchFileVO saveAtchFileList(HttpServletRequest req) throws Exception {
 		
 		String uploadPath = "D:/D_Other/upload_files";
+		//String uploadPath = "/Users/osejun/Desktop/프로그래밍/servletdown";
 		File uploadDir = new File(uploadPath);
 		if(!uploadDir.exists()) {
 			uploadDir.mkdir();
