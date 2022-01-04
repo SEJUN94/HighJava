@@ -7,7 +7,7 @@ import kr.or.ddit.comm.vo.AtchFileVO;
 
 public interface IAtchFileDao {
 	/**
-	 * 
+	 * 첨부파일 저장
 	 * @param atchFileVO
 	 * @return
 	 * @throws SQLException
