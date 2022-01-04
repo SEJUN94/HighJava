@@ -39,7 +39,13 @@ public class DownloadServlet extends HttpServlet{
 		}
 		// 파일 다운로드 처리를 위한 응답헤더 정보 설정하기
 		resp.setContentType("application/octet-stream");
-		resp.setHeader("Content-Disposition", "attachment; filename=\""+ URLEncoder.encode(atchFileVO.getOrignlFileNm(), "UTF-8") +"\"");
+		
+		// URL에는 공백문자를 포함할 수 없다. URLEncoding을 이용하여 인코딩 작업을
+		// 하면 공백은(+)로 표시되기 때문에 +문자를 공백문자인 %20으로 바꿔준다.
+		resp.setHeader("Content-Disposition", "attachment; filename=\""+ URLEncoder.encode(atchFileVO.getOrignlFileNm(), "UTF-8")
+		.replaceAll("\\+", "%20")
+		+"\"");
+		
 		
 		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(atchFileVO.getFileStreCours()));
 		BufferedOutputStream bos = new BufferedOutputStream(resp.getOutputStream());
